@@ -86,7 +86,7 @@ const App = () => {
 		<>
 			<h1 className="text-xl text-gray-800 mb-2">Notes</h1>
 			<Notification message={errorMessage} />
-			{user === null ? (
+			{!user && (
 				<LoginForm
 					handleLogin={handleLogin}
 					setPassword={setPassword}
@@ -94,14 +94,17 @@ const App = () => {
 					username={username}
 					password={password}
 				/>
-			) : (
-				<NoteForm
-					addNote={addNote}
-					handleNoteChange={handleLogin}
-					newNote={newNote}
-				/>
 			)}
-
+			{user && (
+				<>
+					<p className="text-gray-800 ">welcome {user.name}</p>
+					<NoteForm
+						addNote={addNote}
+						handleNoteChange={handleLogin}
+						newNote={newNote}
+					/>
+				</>
+			)}
 			<div>
 				<button onClick={() => setShowAll(!showAll)}>
 					show {showAll ? 'important' : 'all'}
