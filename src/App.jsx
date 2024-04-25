@@ -67,6 +67,7 @@ const App = () => {
 				username,
 				password,
 			})
+			noteService.setToken(user.token)
 			setUser(user)
 			setUserName('')
 			setPassword('')
@@ -100,7 +101,7 @@ const App = () => {
 					<p className="text-gray-800 ">welcome {user.name}</p>
 					<NoteForm
 						addNote={addNote}
-						handleNoteChange={handleLogin}
+						handleNoteChange={handleNoteChange}
 						newNote={newNote}
 					/>
 				</>
