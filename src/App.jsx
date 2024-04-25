@@ -14,12 +14,21 @@ const App = () => {
 	const [username, setUserName] = useState('')
 	const [password, setPassword] = useState('')
 	const [user, setUser] = useState(null)
+
 	useEffect(() => {
 		noteService.getAll().then((res) => {
 			setNotes(res)
 		})
 	}, [])
 
+	useEffect(() => {
+		const loggedUser = localStorage.getItem('loggedInUser')
+		if (loggedUser) {
+			const user = JSON.parse(loggedUser)
+			setUser(user)
+			noteService.setToken(user.token)
+		}
+	}, [user])
 	const addNote = (event) => {
 		event.preventDefault()
 		const noteObject = {
@@ -67,6 +76,7 @@ const App = () => {
 				username,
 				password,
 			})
+			localStorage.setItem('loggedInUser', JSON.stringify(user))
 			noteService.setToken(user.token)
 			setUser(user)
 			setUserName('')
@@ -77,6 +87,11 @@ const App = () => {
 				setErrorMessage(null)
 			}, 3000)
 		}
+	}
+
+	const handleLogOut = () => {
+		localStorage.removeItem('loggedInUser')
+		setUser(null)
 	}
 
 	const notesToShow = showAll
@@ -98,7 +113,16 @@ const App = () => {
 			)}
 			{user && (
 				<>
-					<p className="text-gray-800 ">welcome {user.name}</p>
+					<div className="flex justify-between items-center">
+						<p className="text-gray-800 text-xl">welcome {user.name}</p>
+						<button
+							onClick={handleLogOut}
+							className="border-0 bg-red-500 rounded px-3 py-1 my-3 mr-2 text-white"
+						>
+							Log Out
+						</button>
+					</div>
+
 					<NoteForm
 						addNote={addNote}
 						handleNoteChange={handleNoteChange}
