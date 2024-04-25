@@ -28,7 +28,7 @@ const App = () => {
 			setUser(user)
 			noteService.setToken(user.token)
 		}
-	}, [user])
+	}, [])
 	const addNote = (event) => {
 		event.preventDefault()
 		const noteObject = {
