@@ -5,6 +5,7 @@ import Note from './components/Note'
 import Notification from './components/Notification'
 import NoteForm from './components/NoteForm'
 import LoginForm from './components/LoginForm'
+import Togglable from './components/Togglable'
 
 const App = () => {
 	const [notes, setNotes] = useState([])
@@ -14,6 +15,7 @@ const App = () => {
 	const [username, setUserName] = useState('')
 	const [password, setPassword] = useState('')
 	const [user, setUser] = useState(null)
+	const [loginVisible, setLoginVisible] = useState(false)
 
 	useEffect(() => {
 		noteService.getAll().then((res) => {
@@ -102,14 +104,17 @@ const App = () => {
 		<>
 			<h1 className="text-xl text-gray-800 mb-2">Notes</h1>
 			<Notification message={errorMessage} />
+
 			{!user && (
-				<LoginForm
-					handleLogin={handleLogin}
-					setPassword={setPassword}
-					setUserName={setUserName}
-					username={username}
-					password={password}
-				/>
+				<Togglable buttonLabel="log in">
+					<LoginForm
+						handleLogin={handleLogin}
+						setPassword={setPassword}
+						setUserName={setUserName}
+						username={username}
+						password={password}
+					/>
+				</Togglable>
 			)}
 			{user && (
 				<>
@@ -122,12 +127,13 @@ const App = () => {
 							Log Out
 						</button>
 					</div>
-
-					<NoteForm
-						addNote={addNote}
-						handleNoteChange={handleNoteChange}
-						newNote={newNote}
-					/>
+					<Togglable buttonLabel="new note">
+						<NoteForm
+							addNote={addNote}
+							handleNoteChange={handleNoteChange}
+							newNote={newNote}
+						/>
+					</Togglable>
 				</>
 			)}
 			<div>
