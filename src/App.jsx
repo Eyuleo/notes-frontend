@@ -6,10 +6,10 @@ import Notification from './components/Notification'
 import NoteForm from './components/NoteForm'
 import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
+import Welcome from './components/Welcome'
 
 const App = () => {
 	const [notes, setNotes] = useState([])
-	const [newNote, setNewNote] = useState('')
 	const [showAll, setShowAll] = useState(true)
 	const [errorMessage, setErrorMessage] = useState(null)
 	const [username, setUserName] = useState('')
@@ -31,16 +31,9 @@ const App = () => {
 			noteService.setToken(user.token)
 		}
 	}, [])
-	const addNote = (event) => {
-		event.preventDefault()
-		const noteObject = {
-			content: newNote,
-			important: Math.random() > 0.5,
-		}
-
+	const addNote = (noteObject) => {
 		noteService.create(noteObject).then((res) => {
 			setNotes(notes.concat(res))
-			setNewNote('')
 		})
 	}
 
@@ -118,21 +111,9 @@ const App = () => {
 			)}
 			{user && (
 				<>
-					<div className="flex justify-between items-center">
-						<p className="text-gray-800 text-xl">welcome {user.name}</p>
-						<button
-							onClick={handleLogOut}
-							className="border-0 bg-red-500 rounded px-3 py-1 my-3 mr-2 text-white"
-						>
-							Log Out
-						</button>
-					</div>
+					<Welcome name={user.name} onClick={handleLogOut} />
 					<Togglable buttonLabel="new note">
-						<NoteForm
-							addNote={addNote}
-							handleNoteChange={handleNoteChange}
-							newNote={newNote}
-						/>
+						<NoteForm createNote={addNote} />
 					</Togglable>
 				</>
 			)}
