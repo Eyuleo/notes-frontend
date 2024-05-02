@@ -24,7 +24,7 @@ const Note = ({ note, toggleImportance, deleteNote }) => {
 					{dayjs(note.createdAt).fromNow()}
 				</small>
 			</div>
-			<li className="text-gray-800 font-medium">{note.content}</li>
+			<li className="text-gray-800 font-medium note">{note.content}</li>
 			<button
 				className="border-0 bg-gray-700 rounded px-3 py-1 my-3 mr-2 text-white"
 				onClick={toggleImportance}
